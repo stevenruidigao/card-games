@@ -1,0 +1,92 @@
+<% include partials/header %>
+    	<nav class="navbar navbar-expand-lg bg-light">
+    	<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+    		<!--<a class="navbar-brand" href="#">Navbar</a>-->
+    		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    			<span class="navbar-toggler-icon"></span>
+    		</button>
+    		<div class="collapse navbar-collapse" id="navbarNav">
+    			<ul class="navbar-nav">
+    				<li class="nav-item active">
+    					<a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+    				</li>
+    				<li class="nav-item">
+    					<a class="nav-link" href="/faq">FAQ / What is Hazelnuts?</a>
+    				</li>
+    				<li class="nav-item">
+    					<a class="nav-link" href="/copyright">Copyright</a>
+    				</li>
+    				<li class="nav-item">
+    					<a class="nav-link disabled" href="#">Contact</a>
+    				</li>
+    			</ul>
+    		</div>
+    	</nav>
+        <h1>4 Player Hazelnuts v0.1.1 BETA</h1>
+        <p>
+            Valid plays: <br>
+            <br>
+            Single <br>
+            Pair <br>
+            Straight (5+) <br> 
+            Pairs Straight (3+) <br>
+            Triples <br>
+            Triples with Single <br>
+            Triples with Pair <br>
+            Empty Airplane <br>
+            Airplane <br>
+            Four of a Kind <br>
+            Four of a Kind with Single <br>
+            <br>
+            Setup: <br>
+            <br>
+            Jokers are removed to balance player hands (13/player). <br>
+            A > 2 > K > Q ... <br>
+            Suits don’t matter. <br>
+            The player with 3♡ plays first, play goes clockwise. <br>
+            For player convenience, keep played aces in front of you, with the most recent ace on top. <br>
+            A noob is any player who has no ace(s) unless otherwise specified. <br>
+            Ace of diamonds and Ace of hearts are “red aces”. <br>
+            Ace of spades and Ace of clubs are “black aces”. <br>
+            <br>
+            Time: 8 minutes per round <br>
+            <br>
+            Possible Games: <br>
+            <br>
+            1-1-1-1: Everyone has one ace. There are no noobs, and everyone is playing for themselves. Play for first. <br>
+            2-1-1-0(a): Someone has a pair of black or red aces. They are a solo team. The two people with the other two aces are on a team. The noob is also solo. Play for last. <br>
+            2-1-1-0(b): Someone has one of each color ace. They are neutral. Whatever ace they play first is the team they are not on. Play for last. <br>
+            Note: If someone wins before the neutral can play an ace, the game is over as if they were playing for first. There is one winner, and the game immediately ends. <br>
+            Note: The 2 is green to indicate team flexibility since the 1’s are blue and yellow. <br>
+            2-1-1-0(c): If the neutral’s aces are played together, they defect to the noob team. Play for first. <br>
+            2-2-0-0(a): Two players each have a pair of same colored aces. They are each solo team. Noobs are on a team. Play for first. <br>
+            2-2-0-0(b): Two players each have a pair of opposite colored aces. They are each solo team. Noobs are on a team. Play for first. <br>
+            3-1-0-0: The 3 is the solo team. In this case, the player with the remaining ace is on the noob team. Play for first. <br>
+            4-0-0-0: The 4 is the solo team. The noobs are a team. Play for first. <br>
+            <br>
+            General Strategy: <br>
+            <br>
+            No ace(s): Try to figure out if you have no teammate, a teammate, or teammates. If you think someone is a neutral and strong, try to get them to play pair aces so they join you. Otherwise, just play for last. <br> 
+            <br>
+            One ace: Find your teammate. You have to figure out if your “teammate” is trustworthy, neutral, or trips in disguise. Always be aware that you could be playing FFA. <br>
+            <br>
+            Neutral: Figure out if the other aces are in one hand or two. If someone else seems neutral, play for yourself. If you can find a teammate, remember you’re baiting them. You have to get an ace down or risk losing. <br>
+            <br>
+            Pair of aces: You are solo. Don’t let others know. You can use one ace, and when no one claims teammate, claim neutral at the table. The other pair of aces determines if you’re playing for first or last. <br>
+            <br>
+            Three Aces: By far the hardest hand to play. You are facing a 1v3 situation, with just three aces, not four. Your best strategy is to use your solo ace to bait the last ace into thinking you are teammates. Your secondary strategy is to break the pair and claim neutral at the table. Play for first. <br>
+            <br>
+            Four Aces: You’re solo. It’s 1v3. Try to avoid discussion of who has what, as you will have to claim no aces along with everyone else. Everyone will know there is a solo ace completion. Use Aces as a completion late-game, or use solo aces to bait. <br>
+            <br>
+            All: It’s generally a bad idea to play aces without good reason. Claiming one ace is usually a safe strategy. <br>
+            <br>
+            Conclusion: <br>
+            <br>
+            This game is way too complicated, and probably a waste of your time. <br>
+            Designed by Bubsidos & Hummus <br>
+            Thanks to Laurles and Steven for helping with beta testing / balancing the game. <br>
+        </p>
+        <p id="footer">Made by some people</p>
+        <!--<a id="home" href="/">Home</a>-->
+        <!--<a id="copyright" href="/copyright">Copyright</a>-->
+<% include partials/footer %>
