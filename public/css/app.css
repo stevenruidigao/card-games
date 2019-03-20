@@ -10,6 +10,7 @@ body {
     /*overflow: hidden;*/
 }
 h1 {
+	font-size: 200%;
     /*font-family: Product Sans;*/
     color: red;
     text-align: center;
@@ -37,6 +38,9 @@ h1 {
     background-repeat: no-repeat;
     background-size: contain; 
 }
+h1, h2, h3, h4, h5, h6, p, form, label {
+	font-family: "Arial";
+}
 #chat-bar {
     height: 100%;
     width: 20%;
@@ -52,6 +56,7 @@ h1 {
 	display: block;
 }
 #chat-title {
+	font-family: "Arial";
 	border: none;
 	color: white;
 	background-color: #252525;
@@ -60,7 +65,16 @@ h1 {
 #hide-chat {
 	font-size: 18px;
 	position: relative;
-	left: 35%;
+	left: 33.5%;
+	border: none;
+	color: white;
+	background-color: #252525;
+	
+}
+#close-chat {
+	font-size: 18px;
+	position: relative;
+	left: 34%;
 	border: none;
 	color: white;
 	background-color: #252525;
@@ -135,9 +149,15 @@ h1 {
 }
 @font-face{ 
 	font-family: 'Product Sans';
-	src: url('Product_Sans.woff2') format('woff2'),
-	     url('Product_Sans.ttf') format('truetype'),
-         url('Product_Sans.woff') format('woff');
+	src: url('/fonts/Product_Sans.woff2') format('woff2'),
+	     url('/fonts/Product_Sans.ttf') format('truetype'),
+         url('/fonts/Product_Sans.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face{ 
+	font-family: 'Arial';
+	src: url('/fonts/Arial.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }

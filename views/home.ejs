@@ -1,9 +1,9 @@
 <% include partials/header %>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/client.js"></script>
-	<nav class="navbar navbar-expand-lg bg-light">
+        <script src="/js/client.js"></script>
+	<!--<nav class="navbar navbar-expand-lg bg-light">-->
 	<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-		<a class="navbar-brand" href="#">Hazelnuts</a>
+		<!--<a class="navbar-brand" href="#">Hazelnuts</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -11,7 +11,7 @@
 			<ul class="navbar-nav">
 				<li class="nav-item active">
 					<a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
-				</li>
+			</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/faq">FAQ / What is Hazelnuts?</a>
 				</li>
@@ -23,16 +23,18 @@
 				</li>
 			</ul>
 		</div>
-	</nav>
+	</nav> -->
         <h1>Welcome to HAZELNUTS!</h1>
         <p id="enableJS">Canvas and/or Javascript isn't enabled.  This website requires canvas and javascript.</p>
         <div id="chat-bar">
         	<div id="chat-title">
 				<h>CHAT</h>
-				<button id="hide-chat" onclick="hideChat()">–</button> <br>
+				<button id="hide-chat" onclick="hideChat()">–</button>
+				<button id="close-chat" onclick="closeChat()">X</button> <br>
 			</div>
         	<div id="unb" onKeyPress="submitName(event)">
         		What is your nickname? <br>
+			<label for="username">Username: </label>
 			<input id="username" placeholder="Type your name here...">
         		<button onclick="submitName(0)">Enter</button>
         	</div>
@@ -49,12 +51,9 @@
                 <canvas id="canvas" hidden></canvas>
         	<p>Your Cards: <br></p>
                 <div id="cards">
-	                <div class="card" id="BJ" style="background-image: url('/cards/BJ.svg');" onclick="play(id)"></div>
-	                <div class="card" id="SJ" style="background-image: url('/cards/SJ.svg');" onclick="play(id)"></div>
                 </div>
         </div>
-        <script src="/check.js"></script>
-    
+        <script src="/js/check.js"></script>
         <!--<a id="copyright" href="/copyright">Copyright</a>-->
         <!--<a id="faq" href="/faq">What is HAZELNUTS?</a>-->
 <% include partials/footer %>

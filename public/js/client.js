@@ -92,12 +92,16 @@ function submit(e) {
 function hideChat() {
     var chatbar = document.getElementById("chat-bar");
     var max = document.getElementById("max");
-    chatbar.setAttributeNode(document.createAttribute("hidden"));
+    chatbar.style.display = "none";
     max.removeAttribute("hidden");
+}
+function closeChat() {
+    var chatbar = document.getElementById("chat-bar");
+    chatbar.style.display = "none";
 }
 function showChat() {
     var chatbar = document.getElementById("chat-bar");
     var max = document.getElementById("max");
     max.setAttributeNode(document.createAttribute("hidden"));
-    chatbar.removeAttribute("hidden");
+    chatbar.style.display = "block";
 }

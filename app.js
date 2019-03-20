@@ -130,10 +130,10 @@ io.on("connection", (socket) => {
     // });
     socket.on("play", function(card) {
         // console.log("play " + card);
-        if (hands.dealt.get(socket.id).includes(card)) {
-            socket.broadcast.emit("play", {id : socket.id, card : card});
+        // if (hands.dealt.get(socket.id).includes(card)) {
+        //    socket.broadcast.emit("play", {id : socket.id, card : card});
             // socket.emit("play", card);
-        }
+        //}
     });
     socket.on("chat", function(message) {
 		if (message != "") {
