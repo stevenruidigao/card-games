@@ -93,7 +93,7 @@ function hideChat() {
     var chatbar = document.getElementById("chat-bar");
     var max = document.getElementById("max");
     chatbar.style.display = "none";
-    max.removeAttribute("hidden");
+	max.style.display = "block";
 }
 function closeChat() {
     var chatbar = document.getElementById("chat-bar");
@@ -102,6 +102,6 @@ function closeChat() {
 function showChat() {
     var chatbar = document.getElementById("chat-bar");
     var max = document.getElementById("max");
-    max.setAttributeNode(document.createAttribute("hidden"));
-    chatbar.style.display = "block";
+    max.style.display = "none";
+	chatbar.style.display = "block";
 }
