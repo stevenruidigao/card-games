@@ -165,6 +165,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 }
 @font-face{ 
 	font-family: 'Product Sans';
+	font-display: fallback;
 	src: url('/fonts/Product_Sans.woff2') format('woff2'),
 	     url('/fonts/Product_Sans.ttf') format('truetype'),
          url('/fonts/Product_Sans.woff') format('woff');
@@ -173,6 +174,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 }
 @font-face{ 
 	font-family: 'Arial';
+	font-display: fallback;
 	src: url('/fonts/Arial.woff') format('woff');
     font-weight: normal;
     font-style: normal;
