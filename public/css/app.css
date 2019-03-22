@@ -55,7 +55,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-	display: block;
+	display: none;
 }
 #chat-title {
 	font-family: "Arial";
@@ -67,7 +67,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 #hide-chat {
 	font-size: 18px;
 	position: relative;
-	left: 33.5%;
+	left: 32.5%;
 	border: none;
 	color: white;
 	background-color: #252525;
@@ -75,7 +75,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 #close-chat {
 	font-size: 18px;
 	position: relative;
-	left: 34%;
+	left: 33%;
 	border: none;
 	color: white;
 	background-color: #252525;
@@ -100,10 +100,13 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 #show-chat {
 	font-size: 18px;
 	position: relative;
-	left: 33.5%;
+	left: 33%;
 	border: none;
 	color: white;
 	background-color: #252525;
+}
+#enableJS {
+	color: FF0000;
 }
 #game {
     margin: 0 0;
@@ -163,15 +166,19 @@ h1, h2, h3, h4, h5, h6, p, form, label {
     margin-left: 34.5%;
     display: inline-block;
 }
-@font-face{ 
+#installbtn {
+	display: none;
+}
+/*@font-face{ 
 	font-family: 'Product Sans';
 	src: url('/fonts/Product_Sans.woff2') format('woff2'),
 	     url('/fonts/Product_Sans.ttf') format('truetype'),
          url('/fonts/Product_Sans.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-}
+}*/
 @font-face{ 
+	font-display: optional;
 	font-family: 'Arial';
 	src: url('/fonts/Arial.woff') format('woff');
     font-weight: normal;

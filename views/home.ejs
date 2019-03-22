@@ -1,6 +1,4 @@
 <% include partials/header %>
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/client.js"></script>
 	<!--<nav class="navbar navbar-expand-lg bg-light">-->
 	<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
 		<!--<a class="navbar-brand" href="#">Hazelnuts</a>
@@ -33,9 +31,9 @@
 				<button id="close-chat" onclick="closeChat()">X</button> <br>
 			</div>
         	<div id="unb" onKeyPress="submitName(event)">
-        		What is your nickname? <br>
-			<label for="username">Username: </label>
-			<input id="username" placeholder="Type your name here...">
+        		<p>What is your nickname? <br></p>
+				<label for="username">Username: </label>
+				<input id="username" placeholder="Type your name here...">
         		<button onclick="submitName(0)">Enter</button>
         	</div>
         	<div id="messages">
@@ -54,7 +52,21 @@
                 <div id="cards">
                 </div>
         </div>
+		<button id="installbtn" type="button">Add this site to your homescreen</button>
+        <script src="/socket.io/socket.io.js"></script>
         <script src="/js/check.js"></script>
+        <script src="/js/client.js"></script>
         <!--<a id="copyright" href="/copyright">Copyright</a>-->
         <!--<a id="faq" href="/faq">What is HAZELNUTS?</a>-->
+		<script>
+			if('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('/sw.js', { scope: '/' })
+				.then(function(registration) {
+					console.log('Service Worker Registered');
+				});
+				navigator.serviceWorker.ready.then(function(registration) {
+					console.log('Service Worker Ready');
+				});
+			}
+		</script>
 <% include partials/footer %>
