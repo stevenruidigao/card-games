@@ -1,4 +1,4 @@
-# card-games 0.0.1 [https://img.shields.io/badge/version-0.0.1-red.svg]
+# card-games 0.0.1 ![0.0.1](https://img.shields.io/badge/version-0.0.1-red.svg)
 ## How to install and run:
 Install all the dependencies by running `npm install`.
 
