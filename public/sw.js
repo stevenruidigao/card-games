@@ -11,7 +11,9 @@ self.addEventListener('install', e => {
 				'/css/app.css',
 				'/css/reset.css',
 				'/js/client.js',
-				'/socket.io/socket.io.js'
+				'/images/AS-192.png',
+				'/images/AS-512.png',
+				'/fonts/Arial.woff'
 			]).then(() => self.skipWaiting());
 		})
 	);
