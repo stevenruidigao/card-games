@@ -26,6 +26,12 @@ app.get("/copyright", function(req, res) {
     res.render("copyright");
 });
 
+app.get("/game/:gameID", function(req, res) {
+    console.log(req.params.gameID);
+    if (gameMap.has(req.params.gameID)) res.render("game"); 
+    else res.redirect("/");
+});
+
 app.get("/socket.io", function(req, res) {
     res.sendfile(__dirname + "/socket.io" + req.params[0]);
 });
@@ -100,19 +106,16 @@ class Game {
 
 
 games = [];
+gameMap = new Map();
 players = [];
 
 io.on("connection", (socket) => {
     socket.id = UUID();
     socket.name = socket.id;
+    socket.game = null;
     socket.emit("connected", socket.id);
     console.log("Player " + socket.name + " joined");
-    // socket.broadcast.emit("chat", socket.name + " joined");
     players.push(socket.id);
-    // console.log(players);
-	// DEAL
-    // console.log(hands.dealt);
-    socket.broadcast.emit("reload");
     socket.on('disconnect', function() {
         console.log(socket.name + " disconnected");
         players.splice(players.indexOf(socket.id), 1);
@@ -124,22 +127,19 @@ io.on("connection", (socket) => {
         }
         socket.name = name;
     });
-    // socket.on("reload", function() {
-    //    socket.emit("refresh", hands.dealt.get(socket.id));
-        // console.log(hands.dealt.get(socket.id));
-    // });
-    socket.on("play", function(card) {
-        // console.log("play " + card);
-        // if (hands.dealt.get(socket.id).includes(card)) {
-        //    socket.broadcast.emit("play", {id : socket.id, card : card});
-            // socket.emit("play", card);
-        //}
+    socket.on("newGame", function(name, pass) {
+        newGame = new Game(name, pass);
+        socket.game = newGame;
+        socket.emit("joinGame", newGame.id);
+        games.push(newGame);
+        gameMap.set(newGame.id, newGame);
+        console.log("New Game " + name + " created with id " + newGame.id);
+        
     });
     socket.on("chat", function(message) {
 		if (message != "") {
 			console.log(socket.name + ": " + message);
 			socket.broadcast.emit("chat", socket.name + ": " + message);
-			// socket.emit("chat", {id: socket.id, message: message});
 		}
 	});
 });
