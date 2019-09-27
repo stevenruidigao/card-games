@@ -5,6 +5,7 @@ p.hidden = true;
 canvas.width = document.body.clientWidth;
 canvas.height = document.body.clientHeight - 50;
 var ctx = canvas.getContext("2d");
-ctx.fillStyle = "#50F050";
+ctx.fillStyle = "#FFFFFF";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 window.online = true;
+canvas.hidden = true;
