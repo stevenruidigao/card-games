@@ -107,6 +107,7 @@ class Game {
 
 games = [];
 gameMap = new Map();
+gameIDMap = new Map();
 players = [];
 
 io.on("connection", (socket) => {
@@ -114,10 +115,11 @@ io.on("connection", (socket) => {
     socket.name = socket.id;
     socket.game = null;
     socket.emit("connected", socket.id);
-    console.log("Player " + socket.name + " joined");
+//     console.log("Player " + socket.name + " joined");
     players.push(socket.id);
+    socket.broadcast.emit("gamesList", Array.from(gameIDMap));
     socket.on('disconnect', function() {
-        console.log(socket.name + " disconnected");
+//         console.log(socket.name + " disconnected");
         players.splice(players.indexOf(socket.id), 1);
         socket.broadcast.emit("reload");
     });
@@ -128,12 +130,26 @@ io.on("connection", (socket) => {
         socket.name = name;
     });
     socket.on("newGame", function(name, pass) {
-        newGame = new Game(name, pass);
+        var newGame = new Game(name, pass);
         socket.game = newGame;
-        socket.emit("joinGame", name);
+        console.log(newGame.id);
+        socket.emit("joinGame", newGame.id);
         games.push(newGame);
         gameMap.set(newGame.id, newGame);
+        gameIDMap.set(newGame.id, newGame.name);
+        socket.broadcast.emit("gamesList", Array.from(gameIDMap));
         console.log("New Game " + name + " created with id " + newGame.id);
+        
+    });
+    socket.on("joinGame", function(id, pass) {
+//         console.log(id);
+        var game = gameMap.get(id);
+//         console.log(gameMap);
+//         console.log(id);
+        if (!game.hasPassword || pass == game.pass) {
+            socket.game = game;
+            socket.emit("joinGame", game.id);
+        }
     });
     socket.on("chat", function(message) {
 		if (message != "") {

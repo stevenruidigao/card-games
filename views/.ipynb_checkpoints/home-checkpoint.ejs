@@ -26,26 +26,34 @@
 	</nav> -->
         <h1>Welcome to HAZELNUTS!</h1>
         <p id="enableJS">Canvas and/or Javascript isn't enabled.  This website requires canvas and javascript.</p>
-        <div id="chat-bar">
-        	<div id="chat-title">
+        <div id="chatBar">
+        	<div id="chatTitle">
 				<h>CHAT</h>
-				<button id="hide-chat" onclick="hideChat()">–</button>
-				<button id="close-chat" onclick="closeChat()">X</button> <br>
+				<button id="hideChat" onclick="hideChat()">–</button>
+				<button id="closeChat" onclick="closeChat()">X</button> <br>
 			</div>
         	<div id="unb" onKeyPress="submitName(event)">
         		What is your nickname? <br>
-			<label for="username">Username: </label>
-			<input id="username" placeholder="Type your name here...">
+                <label for="username">Username: </label>
+                <input id="username" placeholder="Type your name here...">
         		<button onclick="submitName(0)">Enter</button>
         	</div>
         	<div id="messages">
         	</div>
-        	<div id="chat-input" onKeyPress="submit(event)">
+        	<div id="chatInput" onKeyPress="submit(event)">
         		<input id="chat" placeholder="Type your message here..." hidden>
         	</div>
         </div>
         <div id="max" hidden>
         	<button onclick="showChat()">+</button>
+        </div>
+        <div id="gamesList">
+            <div id="newGame">
+                <label for="createGame">Game Name: </label>
+                <input id="createGame" placeholder="Name of the game">
+                <button onclick="createGame()">New Game</button>
+            </div>
+            <div id="joinGame"></div>
         </div>
         <canvas id="canvas" hidden></canvas>
         <script src="/js/check.js"></script>

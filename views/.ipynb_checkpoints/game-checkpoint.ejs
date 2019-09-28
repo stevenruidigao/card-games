@@ -2,11 +2,11 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/client.js"></script>
         <p id="enableJS">Canvas and/or Javascript isn't enabled.  This website requires canvas and javascript.</p>
-        <div id="chat-bar">
-        	<div id="chat-title">
+        <div id="chatBar">
+        	<div id="chatTitle">
 				<h>CHAT</h>
-				<button id="hide-chat" onclick="hideChat()">–</button>
-				<button id="close-chat" onclick="closeChat()">X</button> <br>
+				<button id="hideChat" onclick="hideChat()">–</button>
+				<button id="closeChat" onclick="closeChat()">X</button> <br>
 			</div>
         	<div id="unb" onKeyPress="submitName(event)">
         		What is your nickname? <br>
@@ -16,7 +16,7 @@
         	</div>
         	<div id="messages">
         	</div>
-        	<div id="chat-input" onKeyPress="submit(event)">
+        	<div id="chatInput" onKeyPress="submit(event)">
         		<input id="chat" placeholder="Type your message here..." hidden>
         	</div>
         </div>
