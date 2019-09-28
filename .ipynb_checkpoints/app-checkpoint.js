@@ -27,7 +27,8 @@ app.get("/copyright", function(req, res) {
 });
 
 app.get("/game/:gameID", function(req, res) {
-    console.log(req.params.gameID);
+//     console.log(req.params.gameID);
+    
     if (gameMap.has(req.params.gameID)) res.render("game"); 
     else res.redirect("/");
 });
@@ -96,9 +97,12 @@ class Game {
 	}
 	addPlayer(id) {
 		if (!this.started) {
-			this.players.set(id, []);
+			this.players.set(id, players.get(id));
 		}
 	}
+    removePlayer(id) {
+        this.players.delete(id);
+    }
 	start() {
 		this.started = true;
 	}
@@ -108,20 +112,32 @@ class Game {
 games = [];
 gameMap = new Map();
 gameIDMap = new Map();
-players = [];
+players = new Map();
 
 io.on("connection", (socket) => {
     socket.id = UUID();
     socket.name = socket.id;
+    socket.createGame = false;
     socket.game = null;
     socket.emit("connected", socket.id);
 //     console.log("Player " + socket.name + " joined");
-    players.push(socket.id);
-    socket.broadcast.emit("gamesList", Array.from(gameIDMap));
+    players.set(socket.id, socket);
+    socket.emit("gamesList", Array.from(gameIDMap));
     socket.on('disconnect', function() {
-//         console.log(socket.name + " disconnected");
-        players.splice(players.indexOf(socket.id), 1);
-        socket.broadcast.emit("reload");
+        console.log(socket.id + " " + socket.name + " disconnected");
+        players.delete(socket.id);
+        if (socket.game != null) {
+            socket.game.players.delete(socket.id);
+            if (!socket.createGame && socket.game.players.size == 0) {
+                setTimeout(function () {
+                    gameMap.delete(socket.game.id);
+                    gameIDMap.delete(socket.game.id);
+                    console.log("deleted game " + socket.game.id);
+                    socket.broadcast.emit("gamesList", Array.from(gameIDMap));
+                }, 10000)
+            }
+        }
+//         socket.broadcast.emit("reload");
     });
     socket.on("name", function(name) {
         if (name.toLowerCase() != "anonymous") {
@@ -131,7 +147,10 @@ io.on("connection", (socket) => {
     });
     socket.on("newGame", function(name, pass) {
         var newGame = new Game(name, pass);
+        socket.createGame = true;
         socket.game = newGame;
+        newGame.addPlayer(socket.id);
+        console.log(socket.game.players.size);
         console.log(newGame.id);
         socket.emit("joinGame", newGame.id);
         games.push(newGame);
@@ -144,12 +163,12 @@ io.on("connection", (socket) => {
     socket.on("joinGame", function(id, pass) {
 //         console.log(id);
         var game = gameMap.get(id);
-//         console.log(gameMap);
-//         console.log(id);
-        if (!game.hasPassword || pass == game.pass) {
+        if (game && (!game.hasPassword || pass == game.pass)) {
             socket.game = game;
+            game.addPlayer(socket.id);
             socket.emit("joinGame", game.id);
         }
+        console.log(socket.game.players.size);
     });
     socket.on("chat", function(message) {
 		if (message != "") {
