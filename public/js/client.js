@@ -1,3 +1,34 @@
+let deferredPrompt;
+var installButton = document.getElementById("installButton");
+console.log(installButton)
+window.addEventListener('beforeinstallprompt', (e) => {
+	// Prevent Chrome 67 and earlier from automatically showing the prompt
+	e.preventDefault();
+	// Stash the event so it can be triggered later.
+	deferredPrompt = e;
+	// Update UI notify the user they can add to home screen
+	console.log(e);
+	installButton.style.display = 'block';
+});
+installButton.addEventListener('click', (e) => {
+	// hide our user interface that shows our A2HS button
+	installButton.style.display = 'none';
+	// Show the prompt
+	deferredPrompt.prompt();
+	// Wait for the user to respond to the prompt
+	deferredPrompt.userChoice
+    .then((choiceResult) => {
+		if (choiceResult.outcome === 'accepted') {
+			console.log('User accepted the A2HS prompt');
+		} else {
+			console.log('User dismissed the A2HS prompt');
+		}
+		deferredPrompt = null;
+    });
+});
+if (window.online) {
+    showChat();
+}
 var socket = io.connect();
 socket.on("connected", function(uuid) {
     var id = uuid;
@@ -72,53 +103,53 @@ function name(name) {
     }
     console.log(document.cookie);
 }
-function createGame() {
-    var game = document.getElementById("createGame");
-    newGame(game.value, null);
+function createGame(e) {
+    if (e.keyCode == 13 || e == 0) {
+        var game = document.getElementById("createGame");
+        newGame(game.value, null);
+    }
 }
 function newGame(name, pass) {
-    socket.emit("newGame", name, pass);
+    if (name != "") socket.emit("newGame", name, pass);
 }
 function joinGame(id, pass) {
     socket.emit("joinGame", id, pass);
 }
 function hideNamer() {
-    var input = document.getElementById("username");
-    var ubutton = document.getElementById("unb");
-    var chat = document.getElementById("chat");
-    input.hidden = "true";
-    ubutton.hidden = "true";
-    chat.removeAttribute("hidden");
+    var username = document.getElementById("username");
+    var usernameButton = document.getElementById("usernameButton");
+    var chatInput = document.getElementById("chatInput");
+    username.hidden = "true";
+    usernameButton.hidden = "true";
+    chatInput.removeAttribute("hidden");
 }
 function submitName(e) {
     if (e.keyCode == 13 || e == 0) {
-        var input = document.getElementById("username");
-        var ubutton = document.getElementById("unb");
-        var chat = document.getElementById("chat");
-        name(input.value);
+        var username = document.getElementById("username");
+        name(username.value);
         hideNamer();
     }
 }
-function submit(e) {
-    var message = document.getElementById("chat");
+function submitChat(e) {
+    var message = document.getElementById("chatInput");
     if (e.keyCode == 13 || e == 0) {
         chat(message.value);
         message.value = "";
     }
 }
 function hideChat() {
-    var chatbar = document.getElementById("chatBar");
-    var max = document.getElementById("max");
-    chatbar.style.display = "none";
-    max.removeAttribute("hidden");
+    var chatBar = document.getElementById("chatBar");
+    var maximize = document.getElementById("maximize");
+    chatBar.style.display = "none";
+    maximize.removeAttribute("hidden");
 }
 function closeChat() {
-    var chatbar = document.getElementById("chatBar");
-    chatbar.style.display = "none";
+    var chatBar = document.getElementById("chatBar");
+    chatBar.style.display = "none";
 }
 function showChat() {
-    var chatbar = document.getElementById("chatBar");
-    var max = document.getElementById("max");
-    max.setAttributeNode(document.createAttribute("hidden"));
-    chatbar.style.display = "block";
+    var chatBar = document.getElementById("chatBar");
+    var maximize = document.getElementById("maximize");
+    maximize.setAttributeNode(document.createAttribute("hidden"));
+    chatBar.style.display = "block";
 }

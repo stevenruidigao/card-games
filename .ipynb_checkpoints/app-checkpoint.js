@@ -6,7 +6,7 @@ var app = express();
 var server = http.createServer(app);
 var io = require("socket.io").listen(server);
 server.listen(process.env.PORT || 3000, process.env.IP, function(){
-    console.log("Nutella is up!");
+    console.log("Card-games is up!");
 });
 
 app.use(express.static("public"));
@@ -61,21 +61,21 @@ class Deck {
 		}
 		return this.array;
 	}
-	deal(players) {
+	deal(player) {
 		var out = [];
 		var i;
-		for (i = 0; i < players.length; i ++) {
+		for (i = 0; i < playerIDMap.length; i ++) {
 			out.push([]);
 		}
-		for (i = 0; i < (this.array.length - (this.array.length % players.length)); i ++) {
-			var n = i % players.length;
+		for (i = 0; i < (this.array.length - (this.array.length % playerIDMap.length)); i ++) {
+			var n = i % playerIDMap.length;
 			console.log(this.array[i]);
 			out[n].push(this.array[i]);
-			players[n].push(this.array[i]);
+			playerIDMap[n].push(this.array[i]);
 		}
-		for (i = 0; i < players.length; i ++) {
+		for (i = 0; i < playerIDMap.length; i ++) {
 			out[i].sort();
-			players[i].sort();
+			playerIDMap[i].sort();
 		}
 		return out;
 	}
@@ -94,15 +94,15 @@ class Game {
 			this.pass = pass;
 		}
 		this.deck = new Deck();
-		this.players = new Map();
+		this.playerIDMap = new Map();
 	}
 	addPlayer(id) {
 		if (!this.started) {
-			this.players.set(id, players.get(id));
+			this.playerIDMap.set(id, playerIDMap.get(id));
 		}
 	}
     removePlayer(id) {
-        this.players.delete(id);
+        this.playerIDMap.delete(id);
     }
 	start() {
 		this.started = true;
@@ -113,7 +113,7 @@ class Game {
 games = [];
 gameMap = new Map();
 gameIDMap = new Map();
-players = new Map();
+playerIDMap = new Map();
 
 io.on("connection", (socket) => {
     socket.id = UUID();
@@ -122,29 +122,31 @@ io.on("connection", (socket) => {
     socket.game = null;
     socket.emit("connected", socket.id);
 //     console.log("Player " + socket.name + " joined");
-    players.set(socket.id, socket);
+    playerIDMap.set(socket.id, socket);
     socket.emit("gamesList", Array.from(gameIDMap));
-    socket.on('disconnect', function() {
+    socket.on("disconnect", function() {
         console.log(socket.id + " " + socket.name + " disconnected");
-        if (socket.game != null) {
-            setTimeout(function () {
-                console.log(socket.game.players.keys());
-                if (socket.game.players.size == 1) {// && !socket.createGame) {
-                    socket.game.players.delete(socket.id);
-                    gameMap.delete(socket.game.id);
-                    gameIDMap.delete(socket.game.id);
-                    console.log("deleted game " + socket.game.id);
+        var game = socket.game;
+        if (game != null) {
+            var gamePlayerIDMap = game.playerIDMap;
+//             console.log(gamePlayerIDMap.keys());
+            if (gamePlayerIDMap.size == 1) {// && !socket.createGame) {
+                gamePlayerIDMap.delete(socket.id);
+                setTimeout(function () {
+                    gameMap.delete(game.id);
+                    gameIDMap.delete(game.id);
+                    console.log("deleted game " + game.id);
                     socket.broadcast.emit("gamesList", Array.from(gameIDMap));
-                } else if (socket.id == socket.game.players.keys().next().value) {
-//                     console.log(socket.game.players.get(socket.id));
-                    socket.game.players.delete(socket.id);
-                    console.log(socket.game.players.keys().next().value);
-                    console.log(players);
-                    players.get(socket.game.players.keys().next().value).emit("host", socket.game.id);
-                }
-            }, 10000);
+                }, 5000);
+            } else if (socket.id == gamePlayerIDMap.keys().next().value) { // gamePlayerIDMap.size >= 2 && 
+//                 console.log(socket.game.playerIDMap.get(socket.id));
+                gamePlayerIDMap.delete(socket.id);
+//                 console.log(gamePlayerIDMap.keys().next().value);
+//                 console.log(playerIDMap);
+                playerIDMap.get(gamePlayerIDMap.keys().next().value).emit("host", game.id);
+            }
         }
-        players.delete(socket.id);
+        playerIDMap.delete(socket.id);
 //         socket.broadcast.emit("reload");
     });
     socket.on("name", function(name) {
@@ -154,35 +156,39 @@ io.on("connection", (socket) => {
         socket.name = name;
     });
     socket.on("newGame", function(name, pass) {
-        var newGame = new Game(name, pass);
-//         socket.createGame = true;
-        socket.game = newGame;
-//         newGame.addPlayer(socket.id);
-        console.log(socket.game.players.size);
-//         console.log(newGame.id);
-        socket.emit("joinGame", newGame.id);
-        games.push(newGame);
-        gameMap.set(newGame.id, newGame);
-        gameIDMap.set(newGame.id, newGame.name);
-        socket.broadcast.emit("gamesList", Array.from(gameIDMap));
-        console.log("New Game " + name + " created with id " + newGame.id);
+        if (name != "") {
+            var newGame = new Game(name, pass);
+//             socket.createGame = true;
+            socket.game = newGame;
+//             newGame.addPlayer(socket.id);
+//             console.log(socket.game.playerIDMap.size);
+//             console.log(newGame.id);
+            socket.emit("joinGame", newGame.id);
+            games.push(newGame);
+            gameMap.set(newGame.id, newGame);
+            gameIDMap.set(newGame.id, newGame.name);
+            socket.broadcast.emit("gamesList", Array.from(gameIDMap));
+            console.log("New Game " + name + " created with id " + newGame.id);
+        }
         
     });
     socket.on("joinGame", function(id, pass) {
 //         console.log(id);
+//         console.log(gameMap.get(id).playerIDMap);
         var game = gameMap.get(id);
         if (game && (!game.hasPassword || pass == game.pass)) {
-            if (game.players.size == 0) socket.emit("host", id);
+            if (game.playerIDMap.size == 0) socket.emit("host", id);
             socket.game = game;
             game.addPlayer(socket.id);
 //             socket.emit("joinGame", game.id);
         }
-//         console.log(socket.game.players.size);
+        console.log(gameMap.get(id).playerIDMap);
+//         console.log(socket.game.playerIDMap.size);
     });
     socket.on("startGame", function () {
         var game = socket.game;
-        if (game != null && game.players.keys().next().value == socket.id) {
-            game.start;
+        if (game != null && game.playerIDMap.keys().next().value == socket.id) {
+            game.start();
         }
     })
     socket.on("chat", function(message) {

@@ -1,5 +1,19 @@
+        <button id="installButton" type="button">Add this site to your homescreen</button>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/client.js"></script>
         <script>
             loadCookies();
+        </script>
+        <script>
+            if('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then(function(registration) {
+                    console.log('Service Worker Registered');
+                });
+                navigator.serviceWorker.ready.then(function(registration) {
+                    console.log('Service Worker Ready');
+                });
+            }
         </script>
     </body>
 </html>

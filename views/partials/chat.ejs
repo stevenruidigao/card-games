@@ -1,0 +1,21 @@
+<div id="chatBar">
+    <div id="chatTitle">
+        <h>CHAT</h>
+        <button id="hideChat" onclick="hideChat()">–</button>
+        <button id="closeChat" onclick="closeChat()">X</button> <br>
+    </div>
+    <div id="usernameButton" onKeyPress="submitName(event)">
+        What is your nickname? <br>
+        <label for="username">Username: </label>
+        <input id="username" placeholder="Type your name here...">
+        <button onclick="submitName(0)">Enter</button>
+    </div>
+    <div id="messages">
+    </div>
+    <div id="chat" onKeyPress="submitChat(event)">
+        <input id="chatInput" placeholder="Type your message here..." hidden>
+    </div>
+</div>
+<div id="maximize" hidden>
+    <button onclick="showChat()">+</button>
+</div>

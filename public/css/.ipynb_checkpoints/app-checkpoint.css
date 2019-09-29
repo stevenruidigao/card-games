@@ -41,6 +41,12 @@ h1 {
 h1, h2, h3, h4, h5, h6, p, form, label {
 	font-family: "Arial";
 }
+#installButton {
+	display: none;
+}
+#enableJS {
+	color: FF0000;
+}
 #chatBar {
     height: 100%;
     width: 20%;
@@ -53,7 +59,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-	display: block;
+	display: none;
 }
 #chatTitle {
 	font-family: "Arial";
@@ -80,7 +86,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 	background-color: #252525;
 	
 }
-#max {
+#maximize {
     /*top: 0;*/
     right: 0;
     bottom: 0;
@@ -103,14 +109,14 @@ h1, h2, h3, h4, h5, h6, p, form, label {
     display: inline-block;
 }
 #messages {
-    max-height: 65%;
+    height: 85%;
     overflow-y: auto;
     overflow-x: hidden;
 }
-#unb {
+#usernameButton {
     margin: auto;
 }
-#chatInput {
+#chat {
     margin: auto;
     width: 20%;
     /*display: inline-block;*/
@@ -119,7 +125,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
     position: fixed;
     /*overflow-y: auto;*/
 }
-#chat {
+#chatInput {
 	width: 80%;
 }
 #footer {
