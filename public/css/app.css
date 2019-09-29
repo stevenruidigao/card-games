@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-	display: none;
+	display: block;
 }
 #chatTitle {
 	font-family: "Arial";
@@ -120,7 +120,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
     margin: auto;
     width: 20%;
     /*display: inline-block;*/
-    bottom: 10px;
+    bottom: 1%;
     vertical-align: bottom;
     position: fixed;
     /*overflow-y: auto;*/
