@@ -71,7 +71,7 @@ h1, h2, h3, h4, h5, h6, p, form, label {
 #hideChat {
 	font-size: 18px;
 	position: relative;
-	left: 33.5%;
+	left: 10%;
 	border: none;
 	color: white;
 	background-color: #252525;
