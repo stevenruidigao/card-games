@@ -87,7 +87,8 @@ class Game {
 		this.name = name;
 		this.hasPassword = false;
 		this.started = false;
-		this.pass = "none";
+		this.pass = pass;
+        this.host = null;
 		if (pass) {
 			this.hasPassword = true;
 			this.pass = pass;
@@ -125,18 +126,25 @@ io.on("connection", (socket) => {
     socket.emit("gamesList", Array.from(gameIDMap));
     socket.on('disconnect', function() {
         console.log(socket.id + " " + socket.name + " disconnected");
-        players.delete(socket.id);
         if (socket.game != null) {
-            socket.game.players.delete(socket.id);
-            if (!socket.createGame && socket.game.players.size == 0) {
-                setTimeout(function () {
+            setTimeout(function () {
+                console.log(socket.game.players.keys());
+                if (socket.game.players.size == 1) {// && !socket.createGame) {
+                    socket.game.players.delete(socket.id);
                     gameMap.delete(socket.game.id);
                     gameIDMap.delete(socket.game.id);
                     console.log("deleted game " + socket.game.id);
                     socket.broadcast.emit("gamesList", Array.from(gameIDMap));
-                }, 10000)
-            }
+                } else if (socket.id == socket.game.players.keys().next().value) {
+//                     console.log(socket.game.players.get(socket.id));
+                    socket.game.players.delete(socket.id);
+                    console.log(socket.game.players.keys().next().value);
+                    console.log(players);
+                    players.get(socket.game.players.keys().next().value).emit("host", socket.game.id);
+                }
+            }, 10000);
         }
+        players.delete(socket.id);
 //         socket.broadcast.emit("reload");
     });
     socket.on("name", function(name) {
@@ -147,11 +155,11 @@ io.on("connection", (socket) => {
     });
     socket.on("newGame", function(name, pass) {
         var newGame = new Game(name, pass);
-        socket.createGame = true;
+//         socket.createGame = true;
         socket.game = newGame;
-        newGame.addPlayer(socket.id);
+//         newGame.addPlayer(socket.id);
         console.log(socket.game.players.size);
-        console.log(newGame.id);
+//         console.log(newGame.id);
         socket.emit("joinGame", newGame.id);
         games.push(newGame);
         gameMap.set(newGame.id, newGame);
@@ -164,12 +172,19 @@ io.on("connection", (socket) => {
 //         console.log(id);
         var game = gameMap.get(id);
         if (game && (!game.hasPassword || pass == game.pass)) {
+            if (game.players.size == 0) socket.emit("host", id);
             socket.game = game;
             game.addPlayer(socket.id);
-            socket.emit("joinGame", game.id);
+//             socket.emit("joinGame", game.id);
         }
-        console.log(socket.game.players.size);
+//         console.log(socket.game.players.size);
     });
+    socket.on("startGame", function () {
+        var game = socket.game;
+        if (game != null && game.players.keys().next().value == socket.id) {
+            game.start;
+        }
+    })
     socket.on("chat", function(message) {
 		if (message != "") {
 			console.log(socket.name + ": " + message);

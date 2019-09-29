@@ -36,13 +36,19 @@ socket.on("gamesList", function(games) {
                 var joinButton = document.createElement("BUTTON");
                 var text = document.createTextNode("Join " + games.get(id));
                 joinButton.id = id;
-                joinButton.onclick = function() {joinGame(id)};
+                joinButton.onclick = function() {window.location.href = "/game/" + id};
                 joinButton.appendChild(text);
                 gamesList.appendChild(joinButton)
             }
         }
     }
 });
+socket.on("host", function (gameID) {
+   console.log("Hosting " + gameID); 
+});
+
+var gamePaths = window.location.pathname.split("game/");
+if (gamePaths.length == 2) joinGame(gamePaths[1], null);
 
 function loadCookies() {
     if (document.cookie != "") {
