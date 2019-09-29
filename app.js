@@ -16,12 +16,12 @@ var httpsServer = https.createServer({
     }, app);
 var httpServer = http.createServer(app);
 var io = require("socket.io").listen(httpServer);
-httpxServer.listen(process.env.PORT || 3002, process.env.IP, function(){
-    console.log("Card-games is up!");
-});
-httpsServer.listen(process.env.PORT || 3001, process.env.IP, function(){
-    console.log("Card-games is up!");
-});
+// httpxServer.listen(process.env.PORT || 3002, process.env.IP, function(){
+//     console.log("Card-games is up!");
+// });
+// httpsServer.listen(process.env.PORT || 3001, process.env.IP, function(){
+//     console.log("Card-games is up!");
+// });
 httpServer.listen(process.env.PORT || 3000, process.env.IP, function(){
     console.log("Card-games is up!");
 });
