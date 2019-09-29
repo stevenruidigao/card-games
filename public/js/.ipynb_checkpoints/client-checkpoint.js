@@ -1,6 +1,6 @@
 let deferredPrompt;
 var installButton = document.getElementById("installButton");
-console.log(installButton)
+// console.log(installButton)
 window.addEventListener('beforeinstallprompt', (e) => {
 	// Prevent Chrome 67 and earlier from automatically showing the prompt
 	e.preventDefault();
@@ -30,6 +30,7 @@ if (window.online) {
     showChat();
 }
 var socket = io.connect();
+console.log(socket);
 socket.on("connected", function(uuid) {
     var id = uuid;
     console.log('Connected successfully to the socket.io server. My server side ID is ' + id);

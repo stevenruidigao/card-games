@@ -6,14 +6,6 @@ var httpx = require("./httpx");
 var https = require("https");
 var http = require("http");
 var app = express();
-var httpxServer = httpx.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-    }, app);
-var httpsServer = https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-    }, app);
 var httpServer = http.createServer(app);
 var io = require("socket.io").listen(httpServer);
 // httpxServer.listen(process.env.PORT || 3002, process.env.IP, function(){
