@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Cards",
   "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
   "author": "Charles Li, Jason Jiang, and Steven Gao",
   "dependencies": {
     "bootstrap": ">=4.3.1",

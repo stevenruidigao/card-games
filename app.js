@@ -1,13 +1,32 @@
 //Welcome to the guts of Nutella!
 var express = require("express");
 var UUID = require("uuid/v1");
+var fs = require('fs')
+var httpx = require("./httpx");
+var https = require("https");
 var http = require("http");
 var app = express();
-var server = http.createServer(app);
-var io = require("socket.io").listen(server);
-server.listen(process.env.PORT || 3000, process.env.IP, function(){
+var httpxServer = httpx.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+    }, app);
+var httpsServer = https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+    }, app);
+var httpServer = http.createServer(app);
+var io = require("socket.io").listen(httpServer);
+httpxServer.listen(process.env.PORT || 3002, process.env.IP, function(){
     console.log("Card-games is up!");
 });
+httpsServer.listen(process.env.PORT || 3001, process.env.IP, function(){
+    console.log("Card-games is up!");
+});
+httpServer.listen(process.env.PORT || 3000, process.env.IP, function(){
+    console.log("Card-games is up!");
+});
+
+
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -34,7 +53,7 @@ app.get("/game/:gameID", function(req, res) {
 });
 
 app.get("/socket.io", function(req, res) {
-    res.sendfile(__dirname + "/socket.io" + req.params[0]);
+    res.sendFile(__dirname + "/socket.io" + req.params[0]);
 });
 
 app.get("*", function(req, res){
