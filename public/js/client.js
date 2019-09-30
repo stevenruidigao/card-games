@@ -90,12 +90,12 @@ function loadCookies() {
     }
 }
 function chat(message) {
-	if (message != "") {
+	if (message.replace(/\s/g, "") != "") {
 		socket.emit("chat", message);
 	} 
 }
 function name(name) {
-    if (name.replace(/\s/g, "")	== "") {
+    if (name.replace(/\s/g, "") == "") {
         socket.emit("name", "Anonymous");
         document.cookie = "username=Anonymous";
     } else {
