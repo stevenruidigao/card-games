@@ -1,6 +1,9 @@
 <!--         <script src="/js/client.js"></script> -->
         <script>
             loadCookies();
+            if (!window.online) {
+                closeChat();
+            }
         </script>
         <script>
             if('serviceWorker' in navigator) {

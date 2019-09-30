@@ -26,9 +26,6 @@ installButton.addEventListener('click', (e) => {
 		deferredPrompt = null;
     });
 });
-if (window.online) {
-    showChat();
-}
 var socket = io.connect();
 console.log(socket);
 socket.on("connected", function(uuid) {
@@ -49,10 +46,13 @@ socket.on("play", function(data) {
 });
 socket.on("chat", function(message) {
     var messages = document.getElementById("messages");
-    var messagebox = document.createElement("P");
+    var autoScroll = messages.scrollHeight - messages.scrollTop < messages.clientHeight + 17;
+    var messageBox = document.createElement("P");
     var text = document.createTextNode(message);
-    messagebox.appendChild(text);
-    messages.appendChild(messagebox);
+    messageBox.appendChild(text);
+    messages.appendChild(messageBox);
+    console.log(messages.scrollHeight - messages.scrollTop + " ?= " + messages.clientHeight);
+    if (autoScroll) messages.scrollTop = messages.scrollHeight;
     console.log(message);
 });
 socket.on("gamesList", function(games) {
