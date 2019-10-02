@@ -6,10 +6,10 @@ var httpx = require("./httpx");
 var https = require("https");
 var http = require("http");
 var app = express();
-var httpxServer = httpx.createServer({
-  key: fs.readFileSync('Server.key'),
-  cert: fs.readFileSync('Server.crt')
-}, app);
+// var httpxServer = httpx.createServer({
+//   key: fs.readFileSync('Server.key'),
+//   cert: fs.readFileSync('Server.crt')
+// }, app);
 // var httpsServer = https.createServer({
 //   key: fs.readFileSync('Server.key'),
 //   cert: fs.readFileSync('Server.crt')
