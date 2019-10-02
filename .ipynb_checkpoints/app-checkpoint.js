@@ -6,24 +6,40 @@ var httpx = require("./httpx");
 var https = require("https");
 var http = require("http");
 var app = express();
+var httpxServer = httpx.createServer({
+  key: fs.readFileSync('Server.key'),
+  cert: fs.readFileSync('Server.crt')
+}, app);
+var httpsServer = https.createServer({
+  key: fs.readFileSync('Server.key'),
+  cert: fs.readFileSync('Server.crt')
+}, app);
 var httpServer = http.createServer(app);
-var io = require("socket.io").listen(httpServer);
+var io = require("socket.io").listen(httpsServer);
 // httpxServer.listen(process.env.PORT || 3002, process.env.IP, function(){
 //     console.log("Card-games is up!");
 // });
 // httpsServer.listen(process.env.PORT || 3001, process.env.IP, function(){
 //     console.log("Card-games is up!");
 // });
-httpServer.listen(process.env.PORT || 3000, process.env.IP, function(){
+httpsServer.listen(process.env.PORT || 443, process.env.IP, function(){
     console.log("Card-games is up!");
 });
 
-
+httpServer.listen(80, process.env.IP, function() {
+    console.log("Card-games is up!");
+});
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 //routes and stuff
 
+app.all("*", function (req, res, next) {
+    if (!req.secure) {
+//         console.log(req);
+        res.render("certificate");
+    } else next();
+});
 app.get("/", function(req, res){
     // res.sendFile(__dirname + "/client/index.html");
     res.render("home");
@@ -44,9 +60,9 @@ app.get("/game/:gameID", function(req, res) {
     else res.redirect("/");
 });
 
-app.get("/socket.io", function(req, res) {
-    res.sendFile(__dirname + "/socket.io" + req.params[0]);
-});
+// app.get("/socket.io", function(req, res) {
+//     res.sendFile(__dirname + "/socket.io" + req.params[0]);
+// });
 
 app.get("*", function(req, res){
     res.redirect("/");
@@ -72,23 +88,23 @@ class Deck {
 		}
 		return this.array;
 	}
-	deal(player) {
-		var out = [];
-		var i;
-		for (i = 0; i < playerIDMap.length; i ++) {
-			out.push([]);
+    deal(gamePlayerIDMap) {
+        var players = [];
+        console.log(gamePlayerIDMap.keys());
+		for (var id of gamePlayerIDMap.keys()) {
+			players.push([]);
+            console.log("***" + id);
 		}
-		for (i = 0; i < (this.array.length - (this.array.length % playerIDMap.length)); i ++) {
-			var n = i % playerIDMap.length;
-			console.log(this.array[i]);
-			out[n].push(this.array[i]);
-			playerIDMap[n].push(this.array[i]);
+        console.log(players.length);
+		for (var i = 0; i < (this.array.length - (this.array.length % players.length)); i ++) {
+			var n = i % players.length;
+// 			console.log(this.array[i]);
+			players[n].push(this.array[i]);
 		}
-		for (i = 0; i < playerIDMap.length; i ++) {
-			out[i].sort();
-			playerIDMap[i].sort();
+		for (var i = 0; i < gamePlayerIDMap.length; i ++) {
+			players[i].sort();
 		}
-		return out;
+		return players;
 	}
 }
 
@@ -106,10 +122,12 @@ class Game {
 		}
 		this.deck = new Deck();
 		this.playerIDMap = new Map();
+        this.playerCardMap = new Map();
 	}
 	addPlayer(id) {
 		if (!this.started) {
 			this.playerIDMap.set(id, playerIDMap.get(id));
+            console.log(this.playerIDMap.keys());
 		}
 	}
     removePlayer(id) {
@@ -117,6 +135,13 @@ class Game {
     }
 	start() {
 		this.started = true;
+        this.deck.shuffle();
+        this.cards = this.deck.deal(this.playerIDMap);
+        var currHand = 0;
+        for (var id of this.playerIDMap.keys()) {
+            this.playerCardMap.set(id, this.cards[currHand]);
+            this.playerIDMap.get(id).emit("cards", this.cards[currHand]);
+        }
 	}
 }
 
@@ -155,6 +180,8 @@ io.on("connection", (socket) => {
 //                 console.log(gamePlayerIDMap.keys().next().value);
 //                 console.log(playerIDMap);
                 playerIDMap.get(gamePlayerIDMap.keys().next().value).emit("host", game.id);
+            } else {
+                gamePlayerIDMap.delete(socket.id);
             }
         }
         playerIDMap.delete(socket.id);
@@ -193,7 +220,7 @@ io.on("connection", (socket) => {
             game.addPlayer(socket.id);
 //             socket.emit("joinGame", game.id);
         }
-        console.log(gameMap.get(id).playerIDMap);
+//         console.log(gameMap.get(id).playerIDMap);
 //         console.log(socket.game.playerIDMap.size);
     });
     socket.on("startGame", function () {

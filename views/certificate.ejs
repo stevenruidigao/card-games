@@ -1,0 +1,7 @@
+<% include partials/header %>
+        <p>Downloading a certificate so you can access the site...</p>
+        <iframe width="1" height="1" frameborder="0" src="/SRG-Root-X1.crt"></iframe>
+        <script>
+            setTimeout(function (){window.location.replace("https://" + window.location.host + window.location.pathname)}, 10000);
+        </script>
+<% include partials/footer %>

@@ -8,7 +8,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 	deferredPrompt = e;
 	// Update UI notify the user they can add to home screen
 	console.log(e);
-	installButton.style.display = 'block';
+	installButton.style.display = 'inline';
 });
 installButton.addEventListener('click', (e) => {
 	// hide our user interface that shows our A2HS button
@@ -78,12 +78,41 @@ socket.on("gamesList", function(games) {
 socket.on("host", function (gameID) {
    console.log("Hosting " + gameID); 
 });
+socket.on("cards", function(hand) {
+
+    // cards = gameData.(socket.id);
+    console.log(hand);
+    // gameData.sort();
+    var cards = document.getElementById("cards");
+    while (cards.hasChildNodes()) {
+        cards.removeChild(cards.lastChild);
+    }
+    for (var i = 0; i < hand.length; i ++) {
+        var card = document.createElement("div");
+        card.id = hand[i];
+        card.className = "card";
+        card.draggable = true;
+        card.onclick = function (e) {
+            // console.log(e);
+            play(e.target.id);
+        };
+        card.style.backgroundImage = "url('/cards/" + card.id + ".svg')";
+        // console.log(card);
+        cards.appendChild(card);
+    }
+    // for (i = 0; i < cards.childNodes.length; i ++) {
+        // console.log(cards.childNodes);
+        // cards.removeChild(cards.childNodes[i]);
+    // }
+    console.log("cleared");
+    // console.log(card);
+});
 
 var gamePaths = window.location.pathname.split("game/");
 if (gamePaths.length == 2) joinGame(gamePaths[1], null);
 
 function loadCookies() {
-    if (document.cookie != "") {
+    if (document.cookie != "" && document.cookie.split("username=").length >= 2) {
         console.log(document.cookie);
         name(document.cookie.split("username=")[1].split(";")[0]);
         hideNamer();
@@ -115,6 +144,9 @@ function newGame(name, pass) {
 }
 function joinGame(id, pass) {
     socket.emit("joinGame", id, pass);
+}
+function startGame() {
+    socket.emit("startGame");
 }
 function hideNamer() {
     var username = document.getElementById("username");
