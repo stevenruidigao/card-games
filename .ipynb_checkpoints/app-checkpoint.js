@@ -35,10 +35,11 @@ app.set("view engine", "ejs");
 //routes and stuff
 
 app.all("*", function (req, res, next) {
-    if (!req.secure) {
+//     if (!req.secure) {
 //         console.log(req);
-        res.render("certificate");
-    } else next();
+//         res.render("certificate");
+//     } else next();
+    next();
 });
 app.get("/", function(req, res){
     // res.sendFile(__dirname + "/client/index.html");
