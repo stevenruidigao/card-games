@@ -15,7 +15,7 @@ var app = express();
 //   cert: fs.readFileSync('Server.crt')
 // }, app);
 var httpServer = http.createServer(app);
-var io = require("socket.io").listen(httpsServer);
+var io = require("socket.io").listen(httpServer);
 // httpxServer.listen(process.env.PORT || 3002, process.env.IP, function(){
 //     console.log("Card-games is up!");
 // });
