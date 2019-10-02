@@ -10,10 +10,10 @@ var httpxServer = httpx.createServer({
   key: fs.readFileSync('Server.key'),
   cert: fs.readFileSync('Server.crt')
 }, app);
-var httpsServer = https.createServer({
-  key: fs.readFileSync('Server.key'),
-  cert: fs.readFileSync('Server.crt')
-}, app);
+// var httpsServer = https.createServer({
+//   key: fs.readFileSync('Server.key'),
+//   cert: fs.readFileSync('Server.crt')
+// }, app);
 var httpServer = http.createServer(app);
 var io = require("socket.io").listen(httpsServer);
 // httpxServer.listen(process.env.PORT || 3002, process.env.IP, function(){
@@ -22,13 +22,13 @@ var io = require("socket.io").listen(httpsServer);
 // httpsServer.listen(process.env.PORT || 3001, process.env.IP, function(){
 //     console.log("Card-games is up!");
 // });
-httpsServer.listen(process.env.PORT || 443, process.env.IP, function(){
+httpServer.listen(process.env.PORT || 80, process.env.IP, function(){
     console.log("Card-games is up!");
 });
 
-httpServer.listen(80, process.env.IP, function() {
-    console.log("Card-games is up!");
-});
+// httpsServer.listen(443, process.env.IP, function() {
+//     console.log("Card-games is up!");
+// });
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
